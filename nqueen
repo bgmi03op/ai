@@ -1,0 +1,28 @@
+def print_solution(board):
+    for row in board:
+        print(' '.join('Q' if cell else '.' for cell in row))
+    print()
+
+def is_safe(board, row, col):
+    for i in range(row):
+        if board[i][col] or \
+           (col - (row - i) >= 0 and board[i][col - (row - i)]) or \
+           (col + (row - i) < len(board) and board[i][col + (row - i)]):
+            return False
+    return True
+
+def solve_n_queens_util(board, row):
+    if row == len(board):
+        print_solution(board)
+        return
+    for col in range(len(board)):
+        if is_safe(board, row, col):
+            board[row][col] = True
+            solve_n_queens_util(board, row + 1)
+            board[row][col] = False
+
+def solve_n_queens(n):
+    board = [[False] * n for _ in range(n)]
+    solve_n_queens_util(board, 0)
+
+solve_n_queens(4)
